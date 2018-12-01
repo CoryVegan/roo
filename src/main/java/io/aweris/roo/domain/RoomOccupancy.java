@@ -2,6 +2,7 @@ package io.aweris.roo.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import static lombok.AccessLevel.PRIVATE;
 
 @Data
+@NoArgsConstructor(access = PRIVATE) // For test
 @AllArgsConstructor(access = PRIVATE)
 public class RoomOccupancy {
 

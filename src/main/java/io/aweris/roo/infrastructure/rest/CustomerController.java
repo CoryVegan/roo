@@ -3,7 +3,6 @@ package io.aweris.roo.infrastructure.rest;
 
 import io.aweris.roo.api.CustomerService;
 import io.aweris.roo.domain.Customer;
-import io.aweris.roo.infrastructure.utlis.CustomerUtils;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static io.aweris.roo.infrastructure.utlis.CustomerUtils.customerCustomer;
-import static io.reactivex.Flowable.fromIterable;
-import static io.reactivex.Flowable.rangeLong;
 
 
 @RestController
