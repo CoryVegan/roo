@@ -3,6 +3,8 @@ package io.aweris.roo.domain;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+import java.math.BigDecimal;
+
 public interface CustomerRepository {
 
     /**
@@ -29,4 +31,20 @@ public interface CustomerRepository {
      * @return all entities.
      */
     Flowable<Customer> findAll();
+
+    /**
+     * Find customers willing to pay more than given price
+     *
+     * @param payment must not be {@literal null}.
+     * @return entities has payment greater than given Payment
+     */
+    Flowable<Customer> findByPaymentGreaterThan(BigDecimal payment);
+
+    /**
+     * Find customers willing to pay less than or equal given price
+     *
+     * @param payment must not be {@literal null}.
+     * @return entities has payment greater than given Payment
+     */
+    Flowable<Customer> findByPaymentLessThan(BigDecimal payment);
 }

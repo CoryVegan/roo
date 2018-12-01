@@ -6,6 +6,8 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class DBBasedCustomerRepository implements io.aweris.roo.domain.CustomerRepository {
 
@@ -28,5 +30,15 @@ public class DBBasedCustomerRepository implements io.aweris.roo.domain.CustomerR
     @Override
     public Flowable<Customer> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Flowable<Customer> findByPaymentGreaterThan(BigDecimal payment) {
+        return repository.findByPaymentGreaterThanEqualOrderByPaymentDesc(payment);
+    }
+
+    @Override
+    public Flowable<Customer> findByPaymentLessThan(BigDecimal payment) {
+        return repository.findByPaymentLessThanOrderByPaymentDesc(payment);
     }
 }

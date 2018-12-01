@@ -2,7 +2,6 @@ package io.aweris.roo.infrastructure.persistence.springdata;
 
 import io.aweris.roo.BaseIT;
 import io.aweris.roo.domain.Customer;
-import io.aweris.roo.infrastructure.persistence.springdata.CustomerRepository;
 import io.reactivex.Flowable;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +20,8 @@ public class CustomerRepositoryIT extends BaseIT {
 
     @Autowired
     private ReactiveMongoOperations operations;
+
+    private static BigDecimal testLimit = BigDecimal.valueOf(100);
 
     @Before
     public void setUp() {
@@ -84,6 +85,26 @@ public class CustomerRepositoryIT extends BaseIT {
                   .awaitCount(2)
                   .assertValues(new Customer(1L, BigDecimal.valueOf(23)), new Customer(2L, BigDecimal.valueOf(209)))
                   .assertNoErrors()
+                  .awaitTerminalEvent();
+    }
+
+    @Test
+    public void should_find_customers_with_payment_higher_then_given() {
+        repository.findByPaymentGreaterThanEqualOrderByPaymentDesc(testLimit)
+                  .test()
+                  .awaitCount(1)
+                  .assertValueCount(1)
+                  .assertValues(new Customer(2L, BigDecimal.valueOf(209)))
+                  .awaitTerminalEvent();
+    }
+
+    @Test
+    public void should_find_customers_with_payment_lower_then_given() {
+        repository.findByPaymentLessThanOrderByPaymentDesc(testLimit)
+                  .test()
+                  .awaitCount(1)
+                  .assertValueCount(1)
+                  .assertValues(new Customer(1L, BigDecimal.valueOf(23)))
                   .awaitTerminalEvent();
     }
 }
