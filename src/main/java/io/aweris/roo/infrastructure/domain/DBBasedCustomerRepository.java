@@ -1,7 +1,7 @@
 package io.aweris.roo.infrastructure.domain;
 
 import io.aweris.roo.domain.Customer;
-import io.aweris.roo.infrastructure.persistence.CustomerRepository;
+import io.aweris.roo.infrastructure.persistence.springdata.CustomerRepository;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.springframework.stereotype.Service;

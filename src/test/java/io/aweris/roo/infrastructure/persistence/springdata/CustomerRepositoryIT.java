@@ -1,7 +1,8 @@
-package io.aweris.roo.infrastructure.persistence;
+package io.aweris.roo.infrastructure.persistence.springdata;
 
 import io.aweris.roo.BaseIT;
 import io.aweris.roo.domain.Customer;
+import io.aweris.roo.infrastructure.persistence.springdata.CustomerRepository;
 import io.reactivex.Flowable;
 import org.junit.Before;
 import org.junit.Test;
