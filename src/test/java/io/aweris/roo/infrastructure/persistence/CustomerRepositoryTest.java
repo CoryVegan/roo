@@ -59,4 +59,30 @@ public class CustomerRepositoryTest extends BaseIT {
             .assertNoErrors()
             .awaitTerminalEvent();
     }
+
+    @Test
+    public void should_insert_flowable_customers() {
+        var customers = Flowable.just(new Customer(3L, BigDecimal.TEN), new Customer(4L, BigDecimal.ONE));
+
+        repository.saveAll(customers)
+                  .lastElement()
+                  .toFlowable()
+                  .flatMap(s -> repository.findAll())
+                  .count()
+                  .test()
+                  .awaitCount(1)
+                  .assertValue(4L)
+                  .assertNoErrors()
+                  .awaitTerminalEvent();
+    }
+
+    @Test
+    public void should_find_all_customers() {
+        repository.findAll()
+                  .test()
+                  .awaitCount(2)
+                  .assertValues(new Customer(1L, BigDecimal.valueOf(23)), new Customer(2L, BigDecimal.valueOf(209)))
+                  .assertNoErrors()
+                  .awaitTerminalEvent();
+    }
 }
