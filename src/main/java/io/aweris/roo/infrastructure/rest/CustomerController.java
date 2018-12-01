@@ -3,6 +3,7 @@ package io.aweris.roo.infrastructure.rest;
 
 import io.aweris.roo.api.CustomerService;
 import io.aweris.roo.domain.Customer;
+import io.aweris.roo.infrastructure.utlis.CustomerUtils;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static io.aweris.roo.infrastructure.utlis.CustomerUtils.customerCustomer;
 import static io.reactivex.Flowable.fromIterable;
 import static io.reactivex.Flowable.rangeLong;
 
@@ -32,7 +34,7 @@ public class CustomerController {
 
     @PostMapping
     public Flowable<Customer> importPayments(@Valid @RequestBody List<BigDecimal> payments) {
-        return service.saveAll(rangeLong(1, payments.size()).zipWith(fromIterable(payments), Customer::new));
+        return service.saveAll(customerCustomer(payments));
     }
 
     @GetMapping
