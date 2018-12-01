@@ -13,7 +13,7 @@ import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 
-public class CustomerRepositoryTest extends BaseIT {
+public class CustomerRepositoryIT extends BaseIT {
 
     @Autowired
     private CustomerRepository repository;
