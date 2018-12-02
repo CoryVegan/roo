@@ -3,6 +3,7 @@ package io.aweris.roo.infrastructure.rest;
 import io.aweris.roo.api.OccupancyService;
 import io.aweris.roo.domain.Customer;
 import io.aweris.roo.domain.RoomOccupancy;
+import io.aweris.roo.infrastructure.rest.error.ApiError;
 import io.reactivex.Flowable;
 import org.junit.Test;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -44,5 +45,18 @@ public class OccupancyControllerTest extends BaseMvcTest {
                      .expectBodyList(RoomOccupancy.class)
                      .hasSize(2)
                      .contains(premium, economy);
+    }
+
+    @Test
+    public void should_return_validation_error(){
+        webTestClient.get()
+                     .uri(builder -> builder.path("/api/occupancies")
+                                            .queryParam("premium", -1)
+                                            .queryParam("economy", 3)
+                                            .build())
+                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                     .exchange()
+                     .expectStatus().is4xxClientError()
+                     .expectBody(ApiError.class);
     }
 }
