@@ -38,6 +38,36 @@ public class CustomerControllerTest extends BaseMvcTest {
     }
 
     @Test
+    public void when_payment_invalid_should_return_error() {
+        var customer = new Customer(1L, BigDecimal.valueOf(-1));
+
+        when(service.save(customer)).thenReturn(Single.just(customer));
+
+        webTestClient.put()
+                     .uri("/api/customers")
+                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                     .body(Mono.just(customer), Customer.class)
+                     .exchange()
+                     .expectStatus().is4xxClientError();
+    }
+
+
+    @Test
+    public void when_id_invalid_should_return_error() {
+        var customer = new Customer(-1L, BigDecimal.valueOf(1));
+
+        when(service.save(customer)).thenReturn(Single.just(customer));
+
+        webTestClient.put()
+                     .uri("/api/customers")
+                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                     .body(Mono.just(customer), Customer.class)
+                     .exchange()
+                     .expectStatus().is4xxClientError();
+    }
+
+
+    @Test
     public void should_import_all_payments() {
         Flowable<BigDecimal> payments = Flowable.just(BigDecimal.valueOf(10), BigDecimal.valueOf(20), BigDecimal.valueOf(30));
 

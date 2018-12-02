@@ -2,12 +2,15 @@ package io.aweris.roo.infrastructure.rest;
 
 
 import io.aweris.roo.api.CustomerService;
+import io.aweris.roo.api.SaveCustomerCommand;
 import io.aweris.roo.domain.Customer;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import static io.aweris.roo.infrastructure.utlis.CustomerUtils.customerCustomer;
 
 
 @RestController
+@Validated
 @RequestMapping("/api/customers")
 public class CustomerController {
 
@@ -25,12 +29,12 @@ public class CustomerController {
     }
 
     @PutMapping
-    public Single<Customer> saveCustomer(@Valid @RequestBody Customer customer) {
-        return service.save(customer);
+    public Single<Customer> saveCustomer(@Valid @RequestBody SaveCustomerCommand customer) {
+        return service.save(new Customer(customer.getId(), customer.getPayment()));
     }
 
     @PostMapping
-    public Flowable<Customer> importPayments(@Valid @RequestBody List<BigDecimal> payments) {
+    public Flowable<Customer> importPayments(@Valid @NotNull @RequestBody List<BigDecimal> payments) {
         return service.saveAll(customerCustomer(payments));
     }
 
@@ -38,4 +42,5 @@ public class CustomerController {
     public Flowable<Customer> findCustomers() {
         return service.findAll();
     }
+
 }
