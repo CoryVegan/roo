@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  roo:
+    build: .
+    image: roo:dev
+    container_name: roo_development
+    links:
+      - mongo
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo
+      - SPRING_DATA_MONGODB_PORT=27017
+    ports:
+      - 8080:8080
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+     - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    links:
+      - mongo
+    ports:
+      - 8081:8081
