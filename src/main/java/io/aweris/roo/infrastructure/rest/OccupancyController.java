@@ -26,6 +26,6 @@ public class OccupancyController {
 
     @GetMapping
     public Flowable<RoomOccupancy> query(@Valid OccupancyQuery query) {
-        return service.query(query.getPremium(), query.getEconomy(), BigDecimal.valueOf(100));
+        return service.query(query.getPremium(), query.getEconomy(), query.getLimit());
     }
 }

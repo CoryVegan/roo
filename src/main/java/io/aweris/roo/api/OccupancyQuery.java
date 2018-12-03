@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -16,4 +17,7 @@ public class OccupancyQuery {
 
     @Min(0)
     private long economy;
+
+    @Min(0)
+    private BigDecimal limit = BigDecimal.valueOf(100);
 }
