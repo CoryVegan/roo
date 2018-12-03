@@ -107,4 +107,22 @@ public class CustomerRepositoryIT extends BaseIT {
                   .assertValues(new Customer(1L, BigDecimal.valueOf(23)))
                   .awaitTerminalEvent();
     }
+
+    @Test
+    public void should_delete_customer() {
+        repository.deleteById(1L)
+                  .test()
+                  .awaitCount(1)
+                  .assertResult()
+                  .awaitTerminalEvent();
+    }
+
+    @Test
+    public void should_delete_all() {
+        repository.deleteAll()
+                  .test()
+                  .awaitCount(1)
+                  .assertResult()
+                  .awaitTerminalEvent();
+    }
 }

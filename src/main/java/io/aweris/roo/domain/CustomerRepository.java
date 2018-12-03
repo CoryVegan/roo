@@ -1,5 +1,6 @@
 package io.aweris.roo.domain;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -47,4 +48,17 @@ public interface CustomerRepository {
      * @return entities has payment greater than given Payment
      */
     Flowable<Customer> findByPaymentLessThan(BigDecimal payment);
+
+    /**
+     * Deletes the entity with the given id.
+     *
+     * @param id must not be {@literal null}.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
+     */
+    Completable deleteById(Long id);
+
+    /**
+     * Deletes all entities managed by the repository.
+     */
+    Completable deleteAll();
 }

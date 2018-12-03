@@ -2,6 +2,7 @@ package io.aweris.roo.infrastructure.rest;
 
 import io.aweris.roo.api.CustomerService;
 import io.aweris.roo.domain.Customer;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.junit.Test;
@@ -98,5 +99,29 @@ public class CustomerControllerTest extends BaseMvcTest {
                      .exchange()
                      .expectStatus().is2xxSuccessful()
                      .expectBody().json("[{id:1, payment:1},{id:2, payment:10}]");
+    }
+
+    @Test
+    public void should_delete_by_id(){
+        when(service.deleteByID(1L)).thenReturn(Completable.complete());
+
+        webTestClient.delete()
+                     .uri("/api/customers/{id}", 1L)
+                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                     .exchange()
+                     .expectStatus().is2xxSuccessful()
+                     .expectBody().isEmpty();
+    }
+
+    @Test
+    public void should_delete_all(){
+        when(service.deleteByID(1L)).thenReturn(Completable.complete());
+
+        webTestClient.delete()
+                     .uri("/api/customers")
+                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                     .exchange()
+                     .expectStatus().is2xxSuccessful()
+                     .expectBody().isEmpty();
     }
 }

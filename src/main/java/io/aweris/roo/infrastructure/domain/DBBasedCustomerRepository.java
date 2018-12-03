@@ -2,6 +2,7 @@ package io.aweris.roo.infrastructure.domain;
 
 import io.aweris.roo.domain.Customer;
 import io.aweris.roo.infrastructure.persistence.springdata.CustomerRepository;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,15 @@ public class DBBasedCustomerRepository implements io.aweris.roo.domain.CustomerR
     @Override
     public Flowable<Customer> findByPaymentLessThan(BigDecimal payment) {
         return repository.findByPaymentLessThanOrderByPaymentDesc(payment);
+    }
+
+    @Override
+    public Completable deleteById(Long id) {
+        return repository.deleteById(id);
+    }
+
+    @Override
+    public Completable deleteAll() {
+        return repository.deleteAll();
     }
 }

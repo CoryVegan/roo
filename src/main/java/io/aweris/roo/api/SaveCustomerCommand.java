@@ -15,7 +15,7 @@ public class SaveCustomerCommand {
     @Min(1)
     private long id;
 
-    @Min(1)
+    @Min(0)
     @NotNull
     private BigDecimal payment;
 }

@@ -4,12 +4,14 @@ package io.aweris.roo.infrastructure.rest;
 import io.aweris.roo.api.CustomerService;
 import io.aweris.roo.api.SaveCustomerCommand;
 import io.aweris.roo.domain.Customer;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
@@ -42,5 +44,16 @@ public class CustomerController {
     public Flowable<Customer> findCustomers() {
         return service.findAll();
     }
+
+    @DeleteMapping("/{id}")
+    public Completable deleteById(@PathVariable @Valid @Min(1) Long id) {
+        return service.deleteByID(id);
+    }
+
+    @DeleteMapping
+    public Completable deleteAll() {
+        return service.deleteAll();
+    }
+
 
 }

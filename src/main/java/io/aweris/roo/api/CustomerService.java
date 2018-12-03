@@ -2,6 +2,7 @@ package io.aweris.roo.api;
 
 import io.aweris.roo.domain.Customer;
 import io.aweris.roo.domain.CustomerRepository;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,13 @@ public class CustomerService {
 
     public Flowable<Customer> findAll() {
         return repository.findAll();
+    }
+
+    public Completable deleteByID(Long customerId) {
+        return repository.deleteById(customerId);
+    }
+
+    public Completable deleteAll() {
+        return repository.deleteAll();
     }
 }
