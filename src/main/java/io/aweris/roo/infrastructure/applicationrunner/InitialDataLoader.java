@@ -5,16 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 import static io.aweris.roo.infrastructure.utlis.CustomerUtils.convertToCustomer;
-import static java.util.Arrays.asList;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.TEXT_PLAIN;
 
 public class InitialDataLoader implements ApplicationRunner {
     private static final Logger LOG = LoggerFactory.getLogger(InitialDataLoader.class);
@@ -23,10 +19,10 @@ public class InitialDataLoader implements ApplicationRunner {
     private CustomerService service;
     private RestTemplate client;
 
-    public InitialDataLoader(String dataURL, CustomerService service) {
+    public InitialDataLoader(String dataURL, CustomerService service, RestTemplate client) {
         this.dataURL = dataURL;
         this.service = service;
-        this.client = getRestTemplate();
+        this.client = client;
     }
 
     @Override
@@ -45,17 +41,5 @@ public class InitialDataLoader implements ApplicationRunner {
         LOG.info("Initial data fetched. Total : {} records", payments.length);
 
         service.saveAll(convertToCustomer(payments)).doOnComplete(() -> LOG.info("Initial data loaded")).subscribe();
-    }
-
-    private RestTemplate getRestTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        // our data url return response type as text but our data is json
-        // that's why we need to add TEXT_PLAIN to supported media types
-        var converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(asList(TEXT_PLAIN, APPLICATION_JSON));
-        restTemplate.getMessageConverters().add(0, converter);
-
-        return restTemplate;
     }
 }
