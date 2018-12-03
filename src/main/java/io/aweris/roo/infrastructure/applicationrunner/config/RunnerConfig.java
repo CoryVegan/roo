@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties(DataLoaderProperties.class)
-public class DataLoaderConfig {
+public class RunnerConfig {
 
     private DataLoaderProperties properties;
 
-    public DataLoaderConfig(DataLoaderProperties properties) {
+    public RunnerConfig(DataLoaderProperties properties) {
         this.properties = properties;
     }
 
