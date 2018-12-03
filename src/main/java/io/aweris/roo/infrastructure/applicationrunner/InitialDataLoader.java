@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -17,16 +16,15 @@ import static java.util.Arrays.asList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 
-@Component
 public class InitialDataLoader implements ApplicationRunner {
     private static final Logger LOG = LoggerFactory.getLogger(InitialDataLoader.class);
 
-    private static String dataURL = "https://gist.githubusercontent.com/fjahr/b164a446db285e393d8e4b36d17f4143/raw/75108c09a72a001a985d27b968a0ac5a867e830b/smarthost_hotel_guests.json";
-
+    private String dataURL;
     private CustomerService service;
     private RestTemplate client;
 
-    public InitialDataLoader(CustomerService service) {
+    public InitialDataLoader(String dataURL, CustomerService service) {
+        this.dataURL = dataURL;
         this.service = service;
         this.client = getRestTemplate();
     }
@@ -46,7 +44,7 @@ public class InitialDataLoader implements ApplicationRunner {
 
         LOG.info("Initial data fetched. Total : {} records", payments.length);
 
-        service.saveAll(convertToCustomer(payments)).doOnComplete(()-> LOG.info("Initial data loaded")).subscribe();
+        service.saveAll(convertToCustomer(payments)).doOnComplete(() -> LOG.info("Initial data loaded")).subscribe();
     }
 
     private RestTemplate getRestTemplate() {
